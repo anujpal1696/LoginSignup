@@ -7,8 +7,13 @@ import { Card, CardContent } from "@/components/ui/card";
 export default function HomePage() {
     return (
         <main className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
-            {/* TOP NAV */}
-            <header className="flex justify-end px-6 py-4">
+            <header className="flex items-center justify-between px-6 py-4">
+                {/* Left: Personal note */}
+                <span className="text-sm text-gray-500 italic select-none">
+                    God&apos;s plan Baby
+                </span>
+
+                {/* Right: Auth buttons */}
                 <div className="flex gap-3">
                     <Link href="/sign-in">
                         <Button
@@ -23,6 +28,8 @@ export default function HomePage() {
                     </Link>
                 </div>
             </header>
+
+            
             {/* HERO */}
             <section className="flex flex-col items-center justify-center text-center px-4 py-24">
                 <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">
