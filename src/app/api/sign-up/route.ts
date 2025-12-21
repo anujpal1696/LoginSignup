@@ -8,9 +8,10 @@ export  async function POST(request: Request){
     await dbConnect()
     try {
         const {username, email, password} = await request.json()
+        const normalizedUsername = username.trim().toLowerCase();
 
         const existingUserAndVerified = await UserModel.findOne({
-            username,
+            username: normalizedUsername,
             isVerified: true
         })
 
@@ -51,7 +52,7 @@ export  async function POST(request: Request){
             const expyDate = new Date(Date.now() + 3600000)
             const hashedPassword = await bcrypt.hash(password, 10);
             const newUser = new UserModel({
-                username,
+                username: normalizedUsername,
                 email,
                 password: hashedPassword,
                 isVerified: false,
@@ -63,7 +64,8 @@ export  async function POST(request: Request){
             await newUser.save()
         }
         // send Verification Email
-        const res = await sendVerificationEmail(username, email, verifyCode)
+        const res = await sendVerificationEmail(email, normalizedUsername, verifyCode);
+
         if(!res.success){
             return Response.json(
                 {
@@ -79,7 +81,8 @@ export  async function POST(request: Request){
         return Response.json(
             {
                 success: true,
-                message: "User Register Successfully. Please verify your Email"
+                message: "User Register Successfully. Please verify your Email",
+                username: normalizedUsername,
             },
             {
                 status: 200

@@ -4,9 +4,9 @@ import { ApiResponse } from "@/types/ApiResponse";
 import VerificationEmail from "../../emails/verificationEmails";
 
 export default async function sendVerificationEmail(
-    email: string,
-    username: string,
-    verifyCode: string
+  email: string,
+  username: string,
+  verifyCode: string
 ): Promise<ApiResponse> {
     const resend = new Resend(process.env.RESEND_API_KEY);
 
