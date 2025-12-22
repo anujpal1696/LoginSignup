@@ -7,27 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 export default function HomePage() {
     return (
         <main className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
-            <header className="flex items-center justify-between px-6 py-4">
-                {/* Left: Personal note */}
-                <span className="text-sm text-gray-500 italic select-none">
-                    God&apos;s plan Baby
-                </span>
-
-                {/* Right: Auth buttons */}
-                <div className="flex gap-3">
-                    <Link href="/sign-in">
-                        <Button
-                            variant="outline"
-                            className="text-black border-white hover:bg-white hover:text-black"
-                        >
-                            Sign In
-                        </Button>
-                    </Link>
-                    <Link href="sign-up">
-                        <Button>Sign Up</Button>
-                    </Link>
-                </div>
-            </header>
+            
 
             
             {/* HERO */}
