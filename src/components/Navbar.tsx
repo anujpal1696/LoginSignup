@@ -5,29 +5,47 @@ import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { Button } from './ui/button';
 import { User } from 'next-auth';
+import { LogOut } from 'lucide-react';
 
 function Navbar() {
   const { data: session } = useSession();
-  const user : User = session?.user;
+  const user: User = session?.user as User;
 
   return (
-    <nav className="p-4 md:p-6 shadow-md bg-gray-900 text-white">
-      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-        <a href="#" className="text-xl font-bold mb-4 md:mb-0">
-          KyaSceneHai
-        </a>
+    <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/70 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+        {/* Logo */}
+        <Link
+          href="/"
+          className="text-xl font-bold tracking-tight text-white"
+        >
+          NoCap<span className="text-pink-400">.</span>
+        </Link>
+
+        {/* Right side */}
         {session ? (
-          <>
-            <span className="mr-4">
-              Welcome, {user.username || user.email}
+          <div className="flex items-center gap-3">
+            <span className="hidden sm:block text-sm text-zinc-400">
+              @{user.username || user.email}
             </span>
-            <Button onClick={() => signOut()} className="w-full md:w-auto bg-slate-100 text-black" variant='outline'>
+
+            <Button
+              onClick={() => signOut()}
+              variant="outline"
+              className="border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-white"
+            >
+              <LogOut className="mr-2 h-4 w-4" />
               Logout
             </Button>
-          </>
+          </div>
         ) : (
           <Link href="/sign-in">
-            <Button className="w-full md:w-auto bg-slate-100 text-black" variant={'outline'}>Login</Button>
+            <Button
+              variant="outline"
+              className="border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-white"
+            >
+              Login
+            </Button>
           </Link>
         )}
       </div>

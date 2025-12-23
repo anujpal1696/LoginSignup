@@ -20,8 +20,8 @@ import { signInSchema } from "@/schemas/signInSchema";
 import { signIn } from "next-auth/react";
 
 export default function SignInForm() {
-    // const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
+
     const form = useForm<z.infer<typeof signInSchema>>({
         resolver: zodResolver(signInSchema),
         defaultValues: {
@@ -38,75 +38,95 @@ export default function SignInForm() {
         });
 
         if (result?.error) {
-            if (result.error === "CredentialsSignin") {
-                toast.warning("Login Failed", {
-                    description: "Incorrect username or password",
-                });
-            } else {
-                toast.warning("Error", {
-                    description: result.error,
-                });
-            }
+            toast.warning("Login Failed", {
+                description:
+                    result.error === "CredentialsSignin"
+                        ? "Incorrect username or password"
+                        : result.error,
+            });
         }
+
         if (result?.ok) {
             router.replace("/dashboard");
         }
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-800">
-            <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
-                <div className="text-center">
-                    <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
-                        Welcome Back to KyaSceneHai
+        <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black">
+            {/* background glow */}
+            <div className="absolute inset-0 bg-gradient-to-br from-pink-500/20 via-purple-500/10 to-blue-500/20 blur-3xl" />
+
+            <div className="relative w-full max-w-md rounded-2xl border border-white/10 bg-zinc-900/80 p-8 shadow-xl backdrop-blur">
+                <div className="text-center space-y-2 mb-8">
+                    <h1 className="text-4xl font-bold tracking-tight text-white">
+                        Welcome back 👀
                     </h1>
-                    <p className="mb-4">
-                        Sign in to continue your secret conversations
+                    <p className="text-sm text-zinc-400">
+                        Log in to see what people said about you on{" "}
+                        <span className="text-white font-medium">NoCap</span>
                     </p>
                 </div>
+
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
-                        className="space-y-6"
+                        className="space-y-5"
                     >
                         <FormField
                             name="identifier"
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Email/Username</FormLabel>
-                                    <Input {...field} />
+                                    <FormLabel className="text-zinc-300">
+                                        Email or username
+                                    </FormLabel>
+                                    <Input
+                                        {...field}
+                                        className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500 focus-visible:ring-pink-500"
+                                        placeholder="you@example.com"
+                                    />
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
+
                         <FormField
                             name="password"
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Password</FormLabel>
-                                    <Input type="password" {...field} />
+                                    <FormLabel className="text-zinc-300">
+                                        Password
+                                    </FormLabel>
+                                    <Input
+                                        type="password"
+                                        {...field}
+                                        className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500 focus-visible:ring-pink-500"
+                                        placeholder="••••••••"
+                                    />
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
-                        <Button className="w-full" type="submit">
-                            Sign In
+
+                        <Button
+                            type="submit"
+                            className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:opacity-90 transition"
+                        >
+                            Sign in
                         </Button>
                     </form>
                 </Form>
-                <div className="text-center mt-4">
-                    <p>
-                        Not a member yet?{" "}
-                        <Link
-                            href="/sign-up"
-                            className="text-blue-600 hover:text-blue-800"
-                        >
-                            Sign up
-                        </Link>
-                    </p>
-                </div>
+
+                <p className="mt-6 text-center text-sm text-zinc-400">
+                    New here?{" "}
+                    <Link
+                        href="/sign-up"
+                        className="text-pink-400 hover:text-pink-300 font-medium"
+                    >
+                        Create your NoCap link →
+                    </Link>
+                </p>
             </div>
         </div>
     );

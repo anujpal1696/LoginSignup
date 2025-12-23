@@ -2,7 +2,6 @@
 
 import {
     Form,
-    FormControl,
     FormField,
     FormItem,
     FormLabel,
@@ -41,7 +40,6 @@ const VerifyCode = () => {
             router.replace("/sign-in");
         } catch (error) {
             const axiosError = error as AxiosError<ApiResponse>;
-
             toast.error("Verification failed", {
                 description:
                     axiosError.response?.data.message ||
@@ -51,33 +49,49 @@ const VerifyCode = () => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
-            <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
-                <div className="text-center">
-                    <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
-                        Verify Your Account
+        <div className="relative flex min-h-screen items-center justify-center bg-black overflow-hidden">
+            {/* background glow */}
+            <div className="absolute inset-0 bg-gradient-to-br from-pink-500/20 via-purple-500/10 to-blue-500/20 blur-3xl" />
+
+            <div className="relative w-full max-w-md rounded-2xl border border-white/10 bg-zinc-900/80 p-8 shadow-xl backdrop-blur">
+                <div className="text-center mb-8 space-y-2">
+                    <h1 className="text-4xl font-bold text-white">
+                        Verify your email ✉️
                     </h1>
-                    <p className="mb-4">
-                        Enter the verification code sent to your email
+                    <p className="text-sm text-zinc-400">
+                        Enter the code we sent to your inbox
                     </p>
                 </div>
+
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
-                        className="space-y-6"
+                        className="space-y-5"
                     >
                         <FormField
                             name="code"
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Verification Code</FormLabel>
-                                    <Input {...field} />
+                                    <FormLabel className="text-zinc-300">
+                                        Verification code
+                                    </FormLabel>
+                                    <Input
+                                        {...field}
+                                        placeholder="123456"
+                                        className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500 focus-visible:ring-pink-500 tracking-widest text-center"
+                                    />
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit">Verify</Button>
+
+                        <Button
+                            type="submit"
+                            className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:opacity-90 transition"
+                        >
+                            Verify & continue
+                        </Button>
                     </form>
                 </Form>
             </div>
