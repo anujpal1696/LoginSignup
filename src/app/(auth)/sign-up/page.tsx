@@ -70,7 +70,10 @@ export default function SignUpForm() {
         try {
             const resp = await axios.post<ApiResponse>("/api/sign-up", data);
             toast.success(resp.data.message);
-            router.replace(`/verify/${username}`);
+            // router.replace(`/verify/${username}`); 
+            // domain name problem
+            router.replace(`/sign-in`);  
+
         } catch (error) {
             const axiosError = error as AxiosError<ApiResponse>;
             toast("Sign Up Failed", {

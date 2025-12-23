@@ -11,6 +11,8 @@ export async function POST(request: Request) {
 
         const user = await UserModel.findOne({ username: decodedUsername });
 
+        
+        
         if (!user) {
             return Response.json(
                 {
@@ -22,6 +24,22 @@ export async function POST(request: Request) {
                 }
             );
         }
+        // this part i am doing just becuase i do not have domain name so i can not send opts 
+        if(user.isVerified){
+            return Response.json(
+                {
+                    success: true,
+                    message: "acount verified successfully ",
+                },
+                {
+                    status: 200,
+                }
+            );
+        }
+        ///////////////////////////////////////////////////////////////
+
+
+
 
         if (!user.verifyCode || !user.verifyCodeExpiry) {
             return Response.json(

@@ -55,7 +55,7 @@ export  async function POST(request: Request){
                 username: normalizedUsername,
                 email,
                 password: hashedPassword,
-                isVerified: false,
+                isVerified: true, // i have marked this true (domain name problem)
                 verifyCode,
                 verifyCodeExpiry: expyDate,
                 isAcceptingMessage: false,
