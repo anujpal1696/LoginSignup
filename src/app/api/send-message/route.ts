@@ -6,7 +6,11 @@ export async function POST(request: Request) {
     await dbConnect();
     const { username, content } = await request.json();
     try {
-        const user = await UserModel.findOne({ username });
+        const normalizedUsername = username.trim().toLowerCase();
+
+        const user = await UserModel.findOne({
+            username: normalizedUsername,
+        });
 
         if (!user) {
             return Response.json(
@@ -15,7 +19,7 @@ export async function POST(request: Request) {
             );
         }
 
-        if (!user.isAcceptingMessage) {
+        if (!user.isAcceptingMessages) {
             return Response.json(
                 { message: "User is not accepting messages", success: false },
                 { status: 403 } // 403 Forbidden status
@@ -28,6 +32,11 @@ export async function POST(request: Request) {
         };
         user.messages.push(msg as Message);
         await user.save();
+
+        return Response.json(
+            { success: true, message: "Message sent successfully" },
+            { status: 200 }
+        );
     } catch (error) {
         console.error("Error adding message:", error);
         return Response.json(

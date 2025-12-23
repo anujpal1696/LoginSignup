@@ -3,6 +3,7 @@ import { authOptions } from "../auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
 import { User } from "next-auth";
 import dbConnect from "@/lib/dbConnect";
+import mongoose from "mongoose";
 
 export async function GET(request: Request) {
     await dbConnect();
@@ -20,19 +21,27 @@ export async function GET(request: Request) {
             }
         );
     }
+    if (!_user?._id) {
+        return Response.json(
+            { success: false, message: "Invalid session user" },
+            { status: 401 }
+        );
+    }
 
-    const userId = _user._id;
+    const userId = new mongoose.Types.ObjectId(_user._id);
+
     try {
         const user = await UserModel.aggregate([
             {
                 $match: { _id: userId },
             },
             {
-                $unwind: "$messages",
+                $unwind: {
+                    path: "$messages",
+                    preserveNullAndEmptyArrays: true,
+                },
             },
-            {
-                $sort: { createdAt: -1 },
-            },
+            { $sort: { "messages.createdAt": -1 } },
             {
                 $group: {
                     _id: "$_id",
@@ -43,17 +52,13 @@ export async function GET(request: Request) {
 
         if (!user || user.length === 0) {
             return Response.json(
-                { messages: user[0].messages },
-                {
-                    status: 200,
-                }
+                { success: true, messages: [] },
+                { status: 200 }
             );
         }
+
         return Response.json(
-            {
-                success: true,
-                messages: user[0].messages,
-            },
+            { messages: user[0].messages },
             {
                 status: 200,
             }

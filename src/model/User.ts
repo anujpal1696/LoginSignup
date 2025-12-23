@@ -24,41 +24,49 @@ export interface User extends Document{
     verifyCode: string;
     verifyCodeExpiry: Date;
     isVerified: boolean;
-    isAcceptingMessage: boolean;
+    isAcceptingMessages: boolean;
     messages: Message[]
 }
 
 const userSchema: Schema<User> = new Schema({
     username: {
         type: String,
-        required: [true, "username is required "],
+        required: [true, "username is required"],
         unique: true,
         trim: true
     },
     email: {
         type: String,
-        required: [true, "username is required "],
+        required: [true, "email is required"],
         unique: true,
-        match:[/^[^\s@]+@[^\s@]+\.[^\s@]+$/,"Please use a valid Email Address"]
+        match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please use a valid Email Address"]
     },
     password: {
         type: String,
-        required: [true, "Password is required "]
+        required: [true, "Password is required"]
     },
     verifyCode: {
         type: String,
-        required: [true, "verifyCode is required "]
+        required: true
     },
     verifyCodeExpiry: {
         type: Date,
-        required: [true, "verifyCodeExpiry is required "],
+        required: true
     },
     isVerified: {
         type: Boolean,
         default: false
     },
+
+    // ✅ ADD THIS — THIS IS THE FIX
+    isAcceptingMessages: {
+        type: Boolean,
+        default: true,
+    },
+
     messages: [messageSchema]
-})
+});
+
 
 const UserModel = (mongoose.models.User as mongoose.Model<User>) || mongoose.model<User>("User", userSchema)
 

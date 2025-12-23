@@ -58,7 +58,7 @@ export  async function POST(request: Request){
                 isVerified: true, // i have marked this true (domain name problem)
                 verifyCode,
                 verifyCodeExpiry: expyDate,
-                isAcceptingMessage: false,
+                isAcceptingMessages: true,
                 messages: []
             })
             await newUser.save()
