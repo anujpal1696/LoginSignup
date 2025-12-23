@@ -20,8 +20,21 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "./ui/button";
+import { Message } from "@/model/User";
+import { toast } from "sonner"
+import axios from "axios";
 
-const MessageCard = ({message, onMessageDelete}) => {
+type MessageCardProps = {
+    message:Message,
+    onMessageDelete:(messageId: string) => void
+}
+
+const MessageCard = ({message, onMessageDelete}: MessageCardProps) => {
+    const handleDeleteConfirm = async () => {
+        const res = await axios.delete(`/api/delete-message/${message._id}`)
+        toast.info(res.data.message)
+        onMessageDelete(message._id.toString()) // i have converted this _id to stirng let's see koi error toh nhi ayega future mein 
+    }
     return (
         <Card>
             <CardHeader>
