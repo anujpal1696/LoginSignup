@@ -1,11 +1,8 @@
 "use client";
 
-import { ApiResponse } from "@/types/ApiResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDebounceCallback } from "usehooks-ts";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -18,14 +15,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import axios, { AxiosError } from "axios";
-import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signInSchema } from "@/schemas/signInSchema";
 import { signIn } from "next-auth/react";
 
-export default function SignIpForm() {
-    const [isSubmitting, setIsSubmitting] = useState(false);
+export default function SignInForm() {
+    // const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
     const form = useForm<z.infer<typeof signInSchema>>({
         resolver: zodResolver(signInSchema),
@@ -52,6 +47,9 @@ export default function SignIpForm() {
                     description: result.error,
                 });
             }
+        }
+        if (result?.ok) {
+            router.replace("/dashboard");
         }
     };
 
