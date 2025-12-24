@@ -197,8 +197,16 @@ export default function Home() {
                         <Link href="/terms">Terms of Service</Link>
                         <Link href="/privacy">Privacy Policy</Link>
                     </div>
-                    <p className="mt-8 text-lg">
-                        Made with ❤️ for college chaos
+                    <p className="mt-8 text-lg text-gray-600">
+                        Made with ❤️ for college chaos by Anuj ·{" "}
+                        <a
+                            href="https://www.linkedin.com/in/anujpal-dtu"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-medium underline underline-offset-4 hover:text-blue-600 transition"
+                        >
+                            Connect on LinkedIn
+                        </a>
                     </p>
                 </div>
             </footer>
